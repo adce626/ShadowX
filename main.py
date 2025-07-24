@@ -29,6 +29,7 @@ from core.scanner import XSSScanner
 from core.context_engine import ContextEngine
 from core.blind import BlindXSSManager
 from core.report import ReportGenerator
+from core.interactive_scanner import InteractiveXSSScanner
 
 class ShadowX:
     def __init__(self):
@@ -336,8 +337,10 @@ Examples:
     parser.add_argument('--report-only', action='store_true', help='Generate report only (skip scanning)')
     
     # Modes
-    parser.add_argument('--mode', choices=['scan', 'manual', 'report-only'], default='scan',
+    parser.add_argument('--mode', choices=['scan', 'manual', 'report-only', 'interactive'], default='scan',
                        help='Operation mode (default: scan)')
+    parser.add_argument('--interactive', action='store_true',
+                       help='Run in LOXS-style interactive mode with real-time payload testing')
     
     args = parser.parse_args()
     
@@ -356,7 +359,16 @@ Examples:
     shadowx.display_banner()
     
     # Run based on mode
-    if args.mode == 'scan' or not args.report_only:
+    if args.mode == 'interactive' or args.interactive:
+        # Run interactive mode like LOXS
+        if not args.url:
+            shadowx.console.print("[red]Interactive mode requires --url parameter[/red]")
+            sys.exit(1)
+        
+        interactive_scanner = InteractiveXSSScanner()
+        interactive_scanner.run_interactive_scan(args.url)
+        
+    elif args.mode == 'scan' or not args.report_only:
         shadowx.run_scan(args)
     elif args.mode == 'report-only':
         shadowx.generate_report()

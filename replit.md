@@ -7,6 +7,9 @@ ShadowX is a professional-grade Cross-Site Scripting (XSS) vulnerability scanner
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+User request: Create LOXS-style interactive interface with real-time payload testing and color-coded results.
+User request: Focus specifically on XSS vulnerabilities only, not a general scanner like LOXS.
+User request: Emphasize Chrome version compatibility to reduce false positives.
 
 ## System Architecture
 
@@ -59,12 +62,22 @@ Creates comprehensive reports featuring:
 - Embedded screenshots and execution evidence
 - Vulnerability categorization and risk assessment
 
-### 5. Main Application (`main.py`)
+### 5. Interactive Scanner (`core/interactive_scanner.py`)
+LOXS-style real-time payload testing interface featuring:
+- Live payload display with color-coded results (Green/Red/Yellow)
+- Real-time testing progress with payload counters
+- Advanced XSS payload collection (45+ payloads)
+- DOM-based execution verification with alert detection
+- Professional terminal interface with Rich formatting
+- Context-aware payload testing for different injection points
+
+### 6. Main Application (`main.py`)
 Provides the CLI interface with:
 - Rich terminal output with progress bars and colored text
-- Command-line argument parsing
+- Command-line argument parsing with interactive mode support
 - Banner display and branding
 - Result orchestration and reporting
+- Interactive mode integration with --interactive flag
 
 ## Data Flow
 

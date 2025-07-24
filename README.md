@@ -86,8 +86,12 @@ python main.py --url https://example.com --payloads custom_payloads.txt
 
 ### Interactive Mode (Recommended)
 ```bash
-# Launch interactive scanner with realistic simulation
-python interactive.py
+# Launch LOXS-style interactive scanner with real-time payload testing
+python interactive_loxs.py
+
+# Or use main.py with interactive flag
+python main.py --url https://example.com/search?q=test --interactive
+python main.py --url https://example.com/search?q=test --mode interactive
 ```
 
 ### Advanced Options
@@ -141,6 +145,21 @@ ShadowX automatically detects injection contexts and selects appropriate payload
 - Local webhook server option
 - Multiple callback methods (XHR, Fetch, Image, DNS)
 - Data exfiltration payloads
+
+### Interactive LOXS-Style Interface
+ShadowX now features a LOXS-inspired interactive mode that displays real-time payload testing:
+- **Live Payload Display**: Each payload is shown as it's being tested
+- **Color-Coded Results**: Green for successful XSS, red for failed attempts, yellow for reflected but not executed
+- **Real-time Statistics**: Current testing progress with payload counters
+- **Vulnerable Parameter Detection**: Immediate notification when XSS is found
+- **Professional Terminal Interface**: Rich formatting with progress indicators
+
+**Example Interactive Output:**
+```
+[001/045] Testing search: <script>alert("XSS")</script> ✓ VULNERABLE - Alert triggered: XSS
+[002/045] Testing search: <img src=x onerror=alert("XSS")> ✗ FAILED - Not reflected
+[003/045] Testing search: "><script>alert("XSS")</script> ⚠ REFLECTED - No execution
+```
 
 ### Professional Reporting
 - Modern HTML reports with vulnerability cards

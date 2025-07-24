@@ -20,6 +20,10 @@ args = "ShadowX Scanner"
 task = "workflow.run"
 args = "Interactive Scanner"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "LOXS Interactive"
+
 [[workflows.workflow]]
 name = "ShadowX Scanner"
 author = "agent"
@@ -35,3 +39,11 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python interactive.py"
+
+[[workflows.workflow]]
+name = "LOXS Interactive"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python interactive_loxs.py"
