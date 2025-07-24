@@ -365,7 +365,9 @@ Examples:
             shadowx.console.print("[red]Interactive mode requires --url parameter[/red]")
             sys.exit(1)
         
-        interactive_scanner = InteractiveXSSScanner()
+        # Use custom payloads file if specified
+        custom_payloads = getattr(args, 'payloads', None)
+        interactive_scanner = InteractiveXSSScanner(custom_payloads_file=custom_payloads)
         interactive_scanner.run_interactive_scan(args.url)
         
     elif args.mode == 'scan' or not args.report_only:
