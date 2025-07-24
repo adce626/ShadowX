@@ -34,8 +34,17 @@ ShadowX is a professional-grade Cross-Site Scripting (XSS) vulnerability scanner
 
 ### Prerequisites
 - Python 3.9+
-- Google Chrome 114.0.5735.198 (64-bit)
+- Google Chrome (latest stable version recommended)
 - ChromeDriver (automatically managed by webdriver-manager)
+
+### Quick Installation
+```bash
+# Install all dependencies in one command
+pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3
+
+# Verify installation
+python -c "import selenium, requests, rich, colorama, bs4, flask; print('✓ All dependencies installed successfully!')"
+```
 
 ### Chrome Installation
 ```bash
@@ -44,4 +53,91 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 sudo apt -f install
 
-# Or use the auto-managed ChromeDriver (recommended)
+# Alternative: Use package manager
+sudo apt update && sudo apt install google-chrome-stable
+```
+
+### Automated Installation
+```bash
+# Run the installation script
+chmod +x install.sh
+./install.sh
+```
+
+## 📋 Usage
+
+### Basic Usage
+```bash
+# Scan a single URL
+python main.py --url https://example.com/search?q=test
+
+# Scan multiple URLs from file
+python main.py --url-file targets.txt
+
+# Use custom payloads
+python main.py --url https://example.com --payloads custom_payloads.txt
+```
+
+### Interactive Mode (Recommended)
+```bash
+# Launch interactive scanner with realistic simulation
+python interactive.py
+```
+
+### Advanced Options
+```bash
+# Full scan with blind XSS detection
+python main.py --url https://example.com --blind --webhook-url https://webhook.site/unique-id
+
+# High-performance scanning
+python main.py --url-file targets.txt --threads 15 --timeout 20
+
+# WAF bypass mode with GUI
+python main.py --url https://example.com --gui --mode scan
+
+# Generate report from existing data
+python main.py --report-only --output-dir ./previous_scan
+```
+
+### File Formats
+
+**URLs file (targets.txt):**
+```
+https://example.com/search?q=test
+https://target.com/login?user=admin
+https://site.com/contact?name=test&email=test@test.com
+```
+
+**Custom payloads file:**
+```
+<script>alert("XSS")</script>
+"><img src=x onerror=alert("XSS")>
+';alert('XSS');//
+```
+
+## 🎯 Features in Detail
+
+### Context-Aware Analysis
+ShadowX automatically detects injection contexts and selects appropriate payloads:
+- **Script Tag Context**: Breaks out of existing JavaScript
+- **HTML Attribute Context**: Escapes attributes and injects handlers
+- **HTML Body Context**: Injects tags and handlers
+- **Style Context**: CSS-based injection techniques
+
+### False Positive Reduction
+- Combines reflection detection with JavaScript execution confirmation
+- Analyzes DOM mutations and changes
+- Monitors console logs and JavaScript errors
+- Captures screenshots as evidence
+
+### Blind XSS Detection
+- Webhook integration with services like Interactsh
+- Local webhook server option
+- Multiple callback methods (XHR, Fetch, Image, DNS)
+- Data exfiltration payloads
+
+### Professional Reporting
+- Modern HTML reports with vulnerability cards
+- JSON exports for integration
+- Screenshot evidence
+- Risk assessment and recommendations

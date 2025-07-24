@@ -1,0 +1,48 @@
+# ShadowX - Advanced XSS Vulnerability Scanner Dependencies
+# Created by: adce626
+# Use these commands to install all required dependencies:
+
+# Core installation command (run this first):
+pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3
+
+# Individual package breakdown:
+# ============================
+
+# Web automation and browser control
+selenium==4.15.2              # Chrome WebDriver automation for XSS testing
+webdriver-manager==4.0.1      # Automatic ChromeDriver management
+
+# HTTP and networking
+requests==2.31.0              # HTTP client for web requests  
+aiohttp==3.9.5               # Async HTTP client for performance
+urllib3>=1.26.0              # HTTP library (dependency)
+
+# HTML parsing and analysis
+beautifulsoup4==4.12.2       # HTML/XML parsing for context analysis
+
+# User interface and output
+rich==13.5.2                 # Rich terminal output and formatting
+colorama==0.4.6              # Cross-platform colored terminal text
+
+# Web services
+Flask==3.0.3                 # Lightweight web framework for blind XSS webhooks
+
+# Additional utilities (auto-installed with above)
+PyYAML                       # Configuration file parsing
+GitPython                    # Git repository management
+packaging                    # Version handling utilities
+prompt-toolkit               # Enhanced CLI prompts
+
+# Chrome Browser (required for Selenium):
+# =======================================
+# Ubuntu/Debian:
+# wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# sudo dpkg -i google-chrome-stable_current_amd64.deb
+# sudo apt -f install
+
+# Or use the system package manager:
+# sudo apt update && sudo apt install google-chrome-stable
+
+# Verification:
+# =============
+# Run: python -c "import selenium, requests, rich, colorama, bs4, flask; print('All dependencies installed successfully!')"
