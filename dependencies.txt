@@ -1,9 +1,11 @@
 # ShadowX - Advanced XSS Vulnerability Scanner Dependencies
 # Created by: adce626
-# Use these commands to install all required dependencies:
 
-# Core installation command (run this first):
-pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3
+# QUICK INSTALL:
+# pip install -r requirements_pip.txt
+
+# OR use the single command:
+# pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3
 
 # Individual package breakdown:
 # ============================

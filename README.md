@@ -39,8 +39,14 @@ ShadowX is a professional-grade Cross-Site Scripting (XSS) vulnerability scanner
 
 ### Quick Installation
 ```bash
-# Install all dependencies in one command
+# Method 1: Use requirements file (recommended)
+pip install -r requirements_pip.txt
+
+# Method 2: Single command install
 pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3
+
+# Method 3: Automated setup
+python setup.py
 
 # Verify installation
 python -c "import selenium, requests, rich, colorama, bs4, flask; print('✓ All dependencies installed successfully!')"
