@@ -13,7 +13,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import (
     TimeoutException, UnexpectedAlertPresentException, 
@@ -108,7 +108,7 @@ class XSSScanner:
         
         try:
             # Use webdriver-manager to handle ChromeDriver
-            service = ChromeService(ChromeDriverManager(version="114.0.5735.198").install())
+            service = ChromeService(ChromeDriverManager().install())
             driver = webdriver.Chrome(service=service, options=chrome_options)
             driver.set_page_load_timeout(self.timeout)
             driver.implicitly_wait(10)

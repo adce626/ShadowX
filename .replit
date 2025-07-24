@@ -16,6 +16,10 @@ author = "agent"
 task = "workflow.run"
 args = "ShadowX Scanner"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Interactive Scanner"
+
 [[workflows.workflow]]
 name = "ShadowX Scanner"
 author = "agent"
@@ -23,3 +27,11 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "pip install selenium==4.15.2 webdriver-manager==4.0.1 rich==13.5.2 colorama==0.4.6 beautifulsoup4==4.12.2 requests==2.31.0 aiohttp==3.9.5 Flask==3.0.3 && python main.py --help"
+
+[[workflows.workflow]]
+name = "Interactive Scanner"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python interactive.py"

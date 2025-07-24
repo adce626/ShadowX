@@ -282,13 +282,13 @@ class BlindXSSManager:
         
         try:
             # Example for webhook.site (if using their API)
-            if 'webhook.site' in self.webhook_url:
+            if self.webhook_url and 'webhook.site' in self.webhook_url:
                 # webhook.site doesn't have a direct API, but you could
                 # implement a custom service that logs requests
                 pass
                 
             # Example for custom webhook service
-            elif '/api/' in self.webhook_url:
+            elif self.webhook_url and '/api/' in self.webhook_url:
                 # Query your custom webhook service
                 api_url = self.webhook_url.replace('/webhook/', '/api/interactions/')
                 response = requests.get(api_url, timeout=10)
